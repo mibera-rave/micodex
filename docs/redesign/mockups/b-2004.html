@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mibera #420 - MiCodex</title>
+<link rel="icon" href="favicon.ico">
+<style>
+  /* B: 2004. The classic MediaWiki look (MonoBook) that every lore wiki copied. */
+  body { margin: 0; background: #f9f9f9 radial-gradient(ellipse 60em 18em at 0 0, #dfe9f5, #f9f9f9 70%) no-repeat; color: #000; font: 12.7px/1.5em Arial, Helvetica, sans-serif; }
+  a { color: #002bb8; text-decoration: none; } a:hover { text-decoration: underline; } a:visited { color: #5a3696; }
+  #wrap { position: relative; min-width: 760px; padding-top: 1px; }
+  #logo { position: absolute; top: 8px; left: 12px; width: 140px; height: 140px; }
+  #logo img { width: 140px; height: 140px; border: 1px solid #aaa; }
+  #personal { position: absolute; top: 4px; right: 12px; font-size: 92%; text-transform: lowercase; }
+  #tabs { position: absolute; top: 30px; left: 13.2em; margin: 0; padding: 0; list-style: none; white-space: nowrap; }
+  #tabs li { display: inline-block; margin-right: .3em; border: 1px solid #aaa; border-bottom: 0; background: #fff; }
+  #tabs li a { display: block; padding: .1em .9em .2em; font-size: 95%; text-transform: lowercase; }
+  #tabs li.selected { border-color: #fabd23; padding-bottom: 1px; }
+  #content { margin: 52px 0 0 13.2em; padding: .2em 1.2em 1.5em; background: #fff; border: 1px solid #aaa; border-right: 0; }
+  #side { position: absolute; top: 160px; left: 12px; width: 11.8em; }
+  .portlet h5 { margin: .8em 0 0; padding: 0 .5em; font: normal 91% Arial, sans-serif; text-transform: lowercase; }
+  .pBody { background: #fff; border: 1px solid #aaa; padding: .2em .5em .4em; font-size: 95%; }
+  .pBody ul { margin: 0; padding-left: 1.3em; list-style: square; color: #002bb8; }
+  .pBody input[type=text] { width: 9.5em; }
+  h1 { font: normal 188%/1.2 Arial, sans-serif; border-bottom: 1px solid #aaa; margin: .4em 0 .1em; padding-bottom: .1em; }
+  #siteSub { font-size: 92%; color: #333; }
+  h2 { font: normal 150%/1.2 Arial, sans-serif; border-bottom: 1px solid #aaa; margin: 1.1em 0 .4em; }
+  .edit { float: right; font-size: 60%; margin-top: .6em; }
+  #toc { display: inline-block; border: 1px solid #aaa; background: #f9f9f9; padding: .4em .8em; font-size: 95%; margin: .6em 0; }
+  #toc b { display: block; text-align: center; }
+  #toc ol { margin: .2em 0 0; padding-left: 1.4em; }
+  .infobox { float: right; clear: right; width: 23em; margin: .6em 0 .6em 1.2em; border: 1px solid #aaa; background: #f9f9f9; font-size: 92%; border-collapse: collapse; }
+  .infobox th.head { background: #ccccff; font-size: 120%; padding: .3em; }
+  .infobox td, .infobox th { padding: .15em .5em; text-align: left; vertical-align: top; border-top: 1px solid #ddd; }
+  .infobox .pic { text-align: center; padding: .5em; }
+  .infobox .pic img { width: 220px; border: 1px solid #ccc; }
+  .gallery img { width: 80px; height: 80px; border: 1px solid #ccc; background: #fff; padding: 3px; margin: 0 4px 4px 0; }
+  .gallery span { display: inline-block; text-align: center; font-size: 85%; }
+  table.wikitable { border-collapse: collapse; background: #f9f9f9; border: 1px solid #aaa; }
+  table.wikitable th, table.wikitable td { border: 1px solid #aaa; padding: .2em .6em; }
+  table.wikitable th { background: #f2f2f2; }
+  .slot { border: 2px dashed #ff3fa4; color: #ff3fa4; padding: 1px 6px; font-size: 92%; }
+  #footer { margin: .6em 0 1em 13.2em; padding: .4em 0 .3em; background: #fff; border-top: 1px solid #fabd23; border-bottom: 1px solid #fabd23; text-align: center; font-size: 90%; }
+  .badge { display: inline-block; width: 88px; height: 31px; box-sizing: border-box; border: 1px solid #aaa; background: #eef; font: 9px/1.2 Verdana, sans-serif; padding-top: 5px; vertical-align: middle; margin-right: 1em; }
+  .ring { margin: 18px auto 12px; border: 2px outset #dcdcdc; background: #fff; font: 13px/1.4 "Times New Roman", Times, serif; }
+  .ring td { padding: 6px 8px; text-align: center; vertical-align: middle; }
+  .ring a { color: #0000ee; text-decoration: underline; }
+  .ring .btn { width: 88px; height: 31px; box-sizing: border-box; border: 2px outset #ffcc33; background: linear-gradient(#2a0a3a, #000); color: #ffcc33; font: bold 9px/11px Verdana, sans-serif; letter-spacing: .5px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="logo"><a href="#"><img src="smiley.png" alt="MiCodex"></a></div>
+  <div id="personal"><a href="#">log in / create account</a></div>
+  <ul id="tabs">
+    <li class="selected"><a href="#">article</a></li>
+    <li><a href="#">discussion</a></li>
+    <li><a href="#">view source</a></li>
+    <li><a href="#">history</a></li>
+  </ul>
+
+  <div id="side">
+    <div class="portlet"><h5>navigation</h5><div class="pBody"><ul>
+      <li><a href="#">Main Page</a></li>
+      <li><a href="#">The Four Tribes</a></li>
+      <li><a href="#">Ancestors</a></li>
+      <li><a href="#">Grails</a></li>
+      <li><a href="#">For Agents</a></li>
+      <li><a href="#">Random Mibera</a></li>
+    </ul></div></div>
+    <div class="portlet"><h5>search</h5><div class="pBody"><input type="text"> <button>Go</button> <button>Search</button></div></div>
+    <div class="portlet"><h5>toolbox</h5><div class="pBody"><ul>
+      <li><a href="#">What links here</a></li>
+      <li><a href="#">Printable version</a></li>
+      <li><a href="#">Permanent link</a></li>
+      <li><a href="#">Raw markdown</a></li>
+    </ul></div></div>
+  </div>
+
+  <div id="content">
+    <h1>Mibera #420</h1>
+    <div id="siteSub">From MiCodex, <span class="slot">gumi's words</span></div>
+
+    <table class="infobox">
+      <tr><th class="head" colspan="2">Mibera #420</th></tr>
+      <tr><td class="pic" colspan="2"><img src="https://assets.0xhoneyjar.xyz/reveal_phase8/images/b2f81a02b23fcdaef4e43ee414be15b91e7a090e.png" alt="Mibera #420"></td></tr>
+      <tr><th>Archetype</th><td><a href="#">Milady</a></td></tr>
+      <tr><th>Ancestor</th><td><a href="#">Irish Druids</a></td></tr>
+      <tr><th>Birthday</th><td><a href="#">03/15/299 Ce 19:52</a></td></tr>
+      <tr><th>Time Period</th><td>Modern</td></tr>
+      <tr><th>Sun</th><td><a href="#">Pisces</a></td></tr>
+      <tr><th>Moon</th><td><a href="#">Aquarius</a></td></tr>
+      <tr><th>Rising</th><td><a href="#">Libra</a></td></tr>
+      <tr><th>Element</th><td><a href="#">Water</a></td></tr>
+      <tr><th>Drug</th><td><a href="#">Mushrooms</a></td></tr>
+      <tr><th>Swag Rank</th><td><a href="#">Ss</a> (71)</td></tr>
+      <tr><th>Parcel</th><td><a href="#">MiParcel #420</a></td></tr>
+    </table>
+
+    <div id="toc"><b>Contents</b>
+      <ol><li><a href="#">Reveal timeline</a></li><li><a href="#">Traits</a></li><li><a href="#">See also</a></li></ol>
+    </div>
+
+    <h2><span class="edit">[<a href="#">view source</a>]</span>Reveal timeline</h2>
+    <div class="gallery">
+      <span><img src="https://assets.0xhoneyjar.xyz/parcels/parcelsImages/420.png" alt=""><br>MiParcels</span>
+      <span><img src="https://assets.0xhoneyjar.xyz/fractures/miladies/images/420.png" alt=""><br>Miladies</span>
+      <span><img src="https://assets.0xhoneyjar.xyz/reveal_phase1_images/b2f81a02b23fcdaef4e43ee414be15b91e7a090e.png" alt=""><br>#1.1</span>
+      <span><img src="https://assets.0xhoneyjar.xyz/reveal_phase4/images/b2f81a02b23fcdaef4e43ee414be15b91e7a090e.png" alt=""><br>#4.20</span>
+      <span><img src="https://assets.0xhoneyjar.xyz/reveal_phase7/images/b2f81a02b23fcdaef4e43ee414be15b91e7a090e.png" alt=""><br>#7.7</span>
+    </div>
+
+    <h2><span class="edit">[<a href="#">view source</a>]</span>Traits</h2>
+    <table class="wikitable">
+      <tr><th>Trait</th><th>Value</th></tr>
+      <tr><td>Background</td><td><a href="#">Peyote Desert</a></td></tr>
+      <tr><td>Body</td><td><a href="#">Ebony</a></td></tr>
+      <tr><td>Hair</td><td><a href="#">Cottage Blue</a></td></tr>
+      <tr><td>Eyes</td><td><a href="#">Stoned Grey</a></td></tr>
+      <tr><td>Eyebrows</td><td><a href="#">Concerned Thick</a></td></tr>
+      <tr><td>Mouth</td><td><a href="#">Smile</a></td></tr>
+      <tr><td>Shirt</td><td><a href="#">Special K</a></td></tr>
+      <tr><td>Hat</td><td><a href="#">Maid Head</a></td></tr>
+      <tr><td>Earrings</td><td><a href="#">Marijuana Leaf</a></td></tr>
+      <tr><td>Face Accessory</td><td><a href="#">Cross</a></td></tr>
+      <tr><td>Item</td><td><a href="#">Bond Bear 4</a></td></tr>
+    </table>
+
+    <h2><span class="edit">[<a href="#">view source</a>]</span>See also</h2>
+    <ul><li><a href="#">Milady</a></li><li><a href="#">Irish Druids</a></li><li><a href="#">Mushrooms</a></li><li><a href="#">MiParcel #420</a></li></ul>
+  </div>
+
+  <div id="footer">
+    <span class="badge">Powered by<br><b>MediaWiki</b></span>
+    This page was last modified 19:52, 15 March 2004.
+  </div>
+
+  <table class="ring"><tr>
+    <td><a href="#" class="btn">RAVE TIME CONTINUUM</a></td>
+    <td><b>Rave Time Continuum</b><br>[ <a href="#">Previous</a> | <a href="#">Next</a> | <a href="#">Random</a> | <a href="#">List Sites</a> ]</td>
+  </tr></table>
+</div>
+</body>
+</html>
