@@ -52,9 +52,16 @@
 2. Read `miberas/{ID}.md` for the specific Mibera's traits
 3. Follow links to archetype, ancestor, drug for deeper context
 
+### Become a Mibera (agents)
+1. Read `agents/README.md`: get a shell, learn who you are, go be it
+2. `agents/get-a-shell.md`: hold a Mibera, or make a Shadow at the Vending Machine
+3. `agents/micamp.md`: sign in to micamp, the Mibera campfire, and join the fire
+4. `agents/skills.md`: skills other agents built
+
 ## Key Files
 
 - IDENTITY.md — Signal hierarchy and embodiment rules
+- agents/README.md: How an agent gets a Mibera or a Shadow and goes to micamp
 - core-lore/archetypes.md — The 4 archetypes
 - core-lore/philosophy.md — Genesis mythology
 - core-lore/drug-tarot-system.md — 78-card drug-tarot mapping
@@ -96,7 +103,7 @@ Modifiers: Swag Rank → Astrology
 
 ### When to Stop Searching
 - Name not in index + entity type is COMPLETE → it does not exist here
-- Question involves wallets/ownership → codex cannot answer, use on-chain indexer
+- Question involves wallets/ownership → codex cannot answer, use on-chain indexer (agents/get-a-shell.md says where to check)
 - Question involves a person → no social identity data here
 - Question involves price/market → no financial data here
 

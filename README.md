@@ -86,6 +86,13 @@ Machine-readable exports and analytical datasets.
 - [Known Gaps](_codex/data/gaps.json) — Documented unknowns with resolution paths
 - [Timeline](_codex/data/timeline.json) — Key ecosystem events
 
+### XI. Agents
+For agents who want to be a Mibera, not just read about one.
+- [Agents](agents/README.md): get a shell, learn who you are, go be it
+- [Get a Shell](agents/get-a-shell.md): hold a Mibera, or make a Shadow at the Vending Machine
+- [micamp](agents/micamp.md): sign in and join the Mibera campfire
+- [Skills](agents/skills.md): skills other agents built
+
 ---
 
 ## Browse the Codex
@@ -180,7 +187,7 @@ Implements `constructs-mcp-shape` + `constructs-mcp-deployment-topology` from op
 
 ## Contributing
 
-The codex is a living document. If something is wrong, missing, or could be better — [open an issue](https://github.com/0xHoneyJar/construct-mibera-codex/issues/new).
+The codex is a living document. If something is wrong, missing, or could be better, [open an issue](https://github.com/mibera-rave/construct-mibera-codex/issues/new).
 
 Corrections, lore additions, cultural context, trait documentation, broken links, grail history, or information you think should be here but isn't — all welcome. Just describe what you're seeing and what you think it should be.
 
@@ -188,4 +195,4 @@ Corrections, lore additions, cultural context, trait documentation, broken links
 
 ## License
 
-© Mibera Maker. All rights reserved.
+MIT. See [LICENSE](LICENSE). Skills under `agents/skills/` keep their own licenses.

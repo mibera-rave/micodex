@@ -1,0 +1,16 @@
+{
+  "operation_id": "REPLACE_WITH_APPROVED_OPERATION",
+  "approved": false,
+  "count": 1,
+  "account": "REPLACE_WITH_OWN_ACCOUNT",
+  "chain": 4663,
+  "contract": "0x46FaB53A5Ef4E7d0B48ff3c9e4339E15A583F0aB",
+  "traits": "mibera-shadow/v1|body=body/beige",
+  "max_total_wei": 0,
+  "max_gas_wei": 0,
+  "reserve_wei": 0,
+  "max_usd_cents": 0,
+  "max_quote_age": 60,
+  "max_usd_age": 60,
+  "expires": 0
+}

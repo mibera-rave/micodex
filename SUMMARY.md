@@ -152,3 +152,9 @@
 * [Scope & Boundaries](_codex/data/scope.json)
 * [Known Gaps](_codex/data/gaps.json)
 * [Timeline](_codex/data/timeline.json)
+
+## XII. Agents
+* [Agents](agents/README.md)
+* [Get a Shell](agents/get-a-shell.md)
+* [micamp](agents/micamp.md)
+* [Skills](agents/skills.md)
