@@ -1,17 +1,17 @@
 # Codex Health Report
 
-Generated: 2026-08-14
+Generated: 2026-06-23
 
-## Overall: 50% — UNHEALTHY (4/8 categories passing)
+## Overall: 100% — HEALTHY (8/8 categories passing)
 
 ## Audit Results
 
 | Audit | Status | Detail |
 |-------|--------|--------|
-| Structure Audit | PASS | 21654 files, 0 errors, 0 warnings |
-| Link Audit | PASS | 21808 files, 294990 links, 0 broken |
-| Semantic Audit | FAIL | 8/8 checks pass |
-| Schema Validation | FAIL | ModuleNotFoundError: No module named 'yaml' |
+| Structure Audit | PASS | 21653 files, 0 errors, 0 warnings |
+| Link Audit | PASS | 21792 files, 294913 links, 0 broken |
+| Semantic Audit | PASS | 8/8 checks pass |
+| Schema Validation | PASS | Total: 21531 files validated, 0 violation(s) |
 
 ## Entity Counts (disk reality)
 
@@ -30,7 +30,7 @@ Generated: 2026-08-14
 | special_collection_concept | 33 |
 | tarot_card | 78 |
 | trait_total | 1337 |
-| vm_trait | 111 |
+| vm_trait | 110 |
 
 All meta file counts match disk reality.
 
@@ -40,20 +40,8 @@ All 23 prose count claims match disk reality.
 
 ## Export Staleness
 
-- _codex/data/graph.json: older than its source content by 17 day(s) — regenerate with `_codex/scripts/generate-graph.py`
+All data exports are at least as new as their source content.
 
-## Freshness (>30 days stale)
+## Freshness
 
-- manifest.json `mibera`: last verified 2026-06-09 (66 days ago)
-- manifest.json `trait`: last verified 2026-06-09 (66 days ago)
-- manifest.json `drug`: last verified 2026-06-09 (66 days ago)
-- manifest.json `ancestor`: last verified 2026-06-09 (66 days ago)
-- manifest.json `tarot_card`: last verified 2026-06-09 (66 days ago)
-- manifest.json `birthday_era`: last verified 2026-06-09 (66 days ago)
-- manifest.json `special_collection`: last verified 2026-06-09 (66 days ago)
-- manifest.json `grail`: last verified 2026-06-09 (66 days ago)
-- manifest.json `mibera_set`: last verified 2026-06-09 (66 days ago)
-- manifest.json `oracle`: last verified 2026-06-09 (66 days ago)
-- manifest.json `miparcel`: last verified 2026-06-09 (66 days ago)
-- manifest.json `vm_trait`: last verified 2026-06-20 (55 days ago)
-- manifest.json `quiz_archetype`: last verified 2026-07-08 (37 days ago)
+All dates within 30-day threshold.
