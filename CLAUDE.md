@@ -98,4 +98,5 @@ Entity counts and data exports are enforced by `_codex/scripts/health-report.py`
 | `special-collections/` | Partner/special collections | 53 files (5 sub-collections) |
 | `oracle/` | Persona-driven system prompt | 1 |
 | `agents/` | For agents becoming a Mibera: getting a shell, micamp, skills | 4 pages, 1 skill |
+| `site/` | codex.miberarave.xyz: builds every page into a 2004 wiki (`node build.mjs`); its words are in `site/words.txt` | 1 site |
 | `_codex/` | Schemas, scripts, data exports | — |

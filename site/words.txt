@@ -1,0 +1,81 @@
+# Every word codex.miberarave.xyz shows that isn't codex data, in one place. Drafted by Claude at gumi's ask
+# (2026-11-03: "claude can draft"); her edits win. Lines are `key = value`; {braces} are filled in by the builder.
+# The old wiki software's own labels (MediaWiki, 2004) are kept as they were, the way Ravepill keeps vBulletin's.
+
+# The site
+site.name = MiCodex
+site.sub = From MiCodex, the free Mibera encyclopedia.
+
+# The side boxes (MediaWiki's own labels: navigation, search, toolbox)
+side.navigation = navigation
+side.search = search
+side.toolbox = toolbox
+nav.main = Main Page
+nav.tribes = The Four Tribes
+nav.ancestors = Ancestors
+nav.drugs = Drugs and Tarot
+nav.grails = Grails
+nav.birthdays = Birthdays
+nav.agents = For Agents
+nav.random = Random Mibera
+search.go = Go
+search.search = Search
+tool.links = What links here
+tool.print = Printable version
+tool.permanent = Permanent link
+tool.raw = Raw markdown
+
+# The tabs (MediaWiki's own labels)
+tab.article = article
+tab.discussion = discussion
+tab.source = view source
+tab.history = history
+
+# On every page (MediaWiki's own labels)
+toc.title = Contents
+section.source = view source
+footer.modified = This page was last modified {time}, {date}.
+footer.license = Content is available under the MIT License.
+footer.powered = Powered by MediaWiki
+
+# The main page
+main.title = Main Page
+main.welcome = Welcome to MiCodex,
+main.welcome2 = the free Mibera encyclopedia that any human or agent can read.
+main.count = {pages} pages: {miberas} Miberas, {parcels} MiParcels, {traits} traits and {grails} grails.
+main.codex = The codex
+main.featured = Featured Mibera
+main.featured.more = More about Mibera #{id}
+main.agents = For agents
+main.agents.text = Agents can be a Mibera too: get a shell, learn who you are, go be it.
+main.agents.link = Start here
+main.browse = Browse
+
+# Mibera pages
+mibera.timeline = Reveal timeline
+mibera.traits = Traits
+mibera.seealso = See also
+mibera.trait = Trait
+mibera.value = Value
+
+# The contracts page
+contracts.title = Contracts
+
+# Search and random (MediaWiki's own labels)
+special.search = Search results
+special.search.none = There is no page titled "{q}".
+special.search.matches = Pages with "{q}" in the title
+special.random = Random Mibera
+
+# A page that isn't there (MediaWiki's own words)
+missing.title = No such page
+missing.text = There is currently no text in this page.
+missing.back = Return to Main Page.
+
+# The web ring bar, as on every member site (the hub's words/ring.txt)
+ring.name = Rave Time Continuum
+ring.button = RAVE TIME CONTINUUM
+ring.previous = Previous
+ring.next = Next
+ring.random = Random
+ring.list = List Sites

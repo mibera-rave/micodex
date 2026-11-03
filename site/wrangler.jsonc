@@ -1,0 +1,11 @@
+// codex.miberarave.xyz: MiCodex, the codex as a 2004 lore wiki, as static files on Cloudflare (gumi's account).
+// `node build.mjs` writes dist/; `npx wrangler deploy` uploads it (about 22,000 files: Workers Paid allows 100,000).
+// The custom domain makes its own DNS record, which wins over miberarave.xyz's wildcard (the hub on Vercel).
+{
+  "name": "micodex",
+  "compatibility_date": "2026-10-30",
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "routes": [{ "pattern": "codex.miberarave.xyz", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}

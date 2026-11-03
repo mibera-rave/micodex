@@ -1,0 +1,90 @@
+/* MiCodex in the Rave Time Continuum: 2004, the classic MediaWiki look (MonoBook). gumi picked it on 2026-11-03
+   ("CLASSIC WIKI YESSS"). Plain CSS, as a 2004 wiki had. */
+
+body { margin: 0; background: #f9f9f9 radial-gradient(ellipse 60em 18em at 0 0, #dfe9f5, #f9f9f9 70%) no-repeat; color: #000; font: 12.7px/1.5em Arial, Helvetica, sans-serif; }
+a { color: #002bb8; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:visited { color: #5a3696; }
+a.external { color: #3366bb; }
+img { border: 0; }
+
+#wrap { position: relative; min-width: 760px; padding-top: 1px; }
+#logo { position: absolute; top: 8px; left: 12px; width: 140px; height: 140px; }
+#logo img { width: 140px; height: 140px; border: 1px solid #aaa; display: block; }
+
+#tabs { position: absolute; top: 30px; left: 13.2em; margin: 0; padding: 0; list-style: none; white-space: nowrap; }
+#tabs li { display: inline-block; margin-right: .3em; border: 1px solid #aaa; border-bottom: 0; background: #fff; }
+#tabs li a { display: block; padding: .1em .9em .2em; font-size: 95%; text-transform: lowercase; }
+#tabs li.selected { border-color: #fabd23; padding-bottom: 1px; }
+
+#content { margin: 52px 0 0 13.2em; padding: .2em 1.2em 1.5em; background: #fff; border: 1px solid #aaa; border-right: 0; min-height: 30em; overflow: hidden; }
+#side { position: absolute; top: 160px; left: 12px; width: 11.8em; }
+.portlet h5 { margin: .8em 0 0; padding: 0 .5em; font: normal 91% Arial, sans-serif; text-transform: lowercase; }
+.pBody { background: #fff; border: 1px solid #aaa; padding: .2em .5em .4em; font-size: 95%; }
+.pBody ul { margin: 0; padding-left: 1.3em; list-style: square; color: #002bb8; }
+.pBody form { margin: .2em 0 0; }
+.pBody input[type=text] { width: 9.6em; font-size: 95%; }
+.pBody button { font-size: 90%; }
+
+h1.firstHeading { font: normal 188%/1.2 Arial, sans-serif; border-bottom: 1px solid #aaa; margin: .4em 0 .1em; padding-bottom: .1em; }
+#siteSub { font-size: 92%; color: #333; margin-bottom: .6em; }
+#bodyContent h1, #bodyContent h2 { font: normal 150%/1.2 Arial, sans-serif; border-bottom: 1px solid #aaa; margin: 1.1em 0 .4em; padding-bottom: .1em; }
+#bodyContent h3 { font-size: 120%; margin: 1em 0 .3em; }
+#bodyContent h4, #bodyContent h5, #bodyContent h6 { font-size: 105%; margin: .9em 0 .2em; }
+.editsection { float: right; font-size: 60%; font-weight: normal; margin-top: .6em; }
+#bodyContent p { margin: .4em 0 .5em; }
+#bodyContent ul { list-style: square; }
+#bodyContent blockquote { margin: .6em 1.6em; padding: .2em .8em; border-left: 3px solid #ddd; background: #fcfcfc; }
+#bodyContent code { background: #f9f9f9; font-size: 95%; }
+#bodyContent pre { background: #f9f9f9; border: 1px dashed #2f6fab; padding: .8em; line-height: 1.3em; overflow: auto; }
+#bodyContent hr { border: 0; border-top: 1px solid #aaa; }
+#bodyContent img { max-width: 100%; height: auto; }
+
+#toc { display: inline-block; border: 1px solid #aaa; background: #f9f9f9; padding: .4em .8em; font-size: 95%; margin: .6em 0; }
+#toc .toctitle { text-align: center; font-weight: bold; }
+#toc ol { margin: .2em 0 0; padding-left: 1.6em; }
+#toc ol ol { padding-left: 1.4em; }
+
+#bodyContent table, table.wikitable { border-collapse: collapse; background: #f9f9f9; border: 1px solid #aaa; margin: .5em 0; }
+#bodyContent table th, #bodyContent table td { border: 1px solid #aaa; padding: .2em .6em; vertical-align: top; }
+#bodyContent table th { background: #f2f2f2; }
+#bodyContent table.infobox, table.infobox { float: right; clear: right; width: 23em; margin: .6em 0 .8em 1.2em; border: 1px solid #aaa; background: #f9f9f9; font-size: 92%; }
+table.infobox th, table.infobox td { border: 0 !important; border-top: 1px solid #ddd !important; padding: .15em .5em !important; text-align: left; background: transparent !important; }
+table.infobox th.head { background: #ccccff !important; font-size: 120%; padding: .3em !important; text-align: center; border-top: 0 !important; }
+table.infobox td.pic { text-align: center; padding: .5em !important; }
+table.infobox td.pic img { width: 220px; border: 1px solid #ccc; }
+
+.gallery { margin: .4em 0; }
+.gallery span { display: inline-block; text-align: center; font-size: 85%; margin: 0 4px 6px 0; vertical-align: top; }
+.gallery img { width: 80px; height: 80px; object-fit: cover; border: 1px solid #ccc; background: #fff; padding: 3px; display: block; }
+
+/* the main page */
+.mp-welcome { border: 1px solid #aaa; background: #f9f9f9; padding: .6em 1em; margin: .8em 0 1em; text-align: center; }
+.mp-welcome .big { font-size: 162%; }
+.mp-welcome .small { font-size: 95%; }
+.mp-cols { display: table; width: 100%; border-spacing: 0 0; }
+.mp-col { display: table-cell; vertical-align: top; width: 50%; }
+.mp-col:first-child { padding-right: .6em; }
+.mp-box { border: 1px solid #aaa; margin-bottom: .9em; background: #fff; }
+.mp-box h2 { margin: 0 !important; padding: .15em .5em !important; font-size: 120% !important; font-weight: bold !important; border-bottom: 1px solid #aaa !important; }
+.mp-box .in { padding: .4em .8em .6em; }
+.mp-a h2 { background: #cef2e0; } .mp-b h2 { background: #cedff2; } .mp-c h2 { background: #ddcef2; } .mp-d h2 { background: #f2e0ce; }
+.mp-a { border-color: #a3bfb1; } .mp-b { border-color: #a3b0bf; } .mp-c { border-color: #afa3bf; } .mp-d { border-color: #bfb1a3; }
+.mp-featured img { float: left; width: 140px; margin: .2em 1em .4em 0; border: 1px solid #ccc; }
+
+#footer { margin: .6em 0 1em 13.2em; padding: .4em 0 .3em; background: #fff; border-top: 1px solid #fabd23; border-bottom: 1px solid #fabd23; text-align: center; font-size: 90%; }
+#footer .badge { display: inline-block; width: 88px; height: 31px; box-sizing: border-box; border: 1px solid #aaa; background: #eef; font: 9px/1.2 Verdana, sans-serif; padding-top: 5px; vertical-align: middle; margin-right: 1em; color: #000; }
+#footer ul { display: inline-block; margin: 0; padding: 0; list-style: none; vertical-align: middle; text-align: left; }
+
+/* the web ring bar, the same on every member site (the hub's components/RingBar.tsx) */
+.ring { margin: 18px auto 12px; border: 2px outset #dcdcdc; background: #fff; color: #000; font: 13px/1.4 "Times New Roman", Times, serif; border-collapse: separate; }
+.ring td { padding: 6px 8px; text-align: center; vertical-align: middle; }
+.ring a { color: #0000ee; text-decoration: underline; }
+.ring a.btn { width: 88px; height: 31px; box-sizing: border-box; border: 2px outset #ffcc33; background: linear-gradient(#2a0a3a, #000); color: #ffcc33; font: bold 9px/11px Verdana, Geneva, sans-serif; letter-spacing: .5px; display: flex; align-items: center; justify-content: center; text-align: center; text-decoration: none; }
+
+@media print {
+  body { background: #fff; }
+  #logo, #side, #tabs, .ring, .editsection, #footer .badge { display: none; }
+  #content { margin: 0; border: 0; }
+  #footer { margin: 1em 0 0; border: 0; }
+}
