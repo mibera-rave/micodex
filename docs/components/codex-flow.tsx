@@ -37,7 +37,7 @@ export function CodexFlow({ ariaLabel }: CodexFlowProps) {
 
       <div className="codex-flow__surfaces">
         <a
-          href="https://github.com/0xHoneyJar/construct-mibera-codex"
+          href="https://github.com/mibera-rave/micodex"
           className="codex-flow__surface"
           target="_blank"
           rel="noopener noreferrer"
@@ -55,7 +55,7 @@ export function CodexFlow({ ariaLabel }: CodexFlowProps) {
 
         <a href="/codex" className="codex-flow__surface">
           <div className="codex-flow__surface-kind">Site</div>
-          <div className="codex-flow__surface-name">codex.0xhoneyjar.xyz</div>
+          <div className="codex-flow__surface-name">codex.miberarave.xyz</div>
           <div className="codex-flow__surface-role">you are here</div>
         </a>
       </div>

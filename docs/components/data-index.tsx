@@ -25,7 +25,7 @@ type CodexStats = {
 };
 
 const REPO_BASE =
-  "https://github.com/0xHoneyJar/construct-mibera-codex/blob/main";
+  "https://github.com/mibera-rave/micodex/blob/main";
 
 type Export = {
   label: string;

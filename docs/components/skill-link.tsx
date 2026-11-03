@@ -6,7 +6,7 @@
  * the skill.md document and configures itself.
  *
  * Pattern:
- *   "Read https://codex.0xhoneyjar.xyz/skill.md and set up Mibera Codex"
+ *   "Read https://codex.miberarave.xyz/skill.md and set up Mibera Codex"
  *
  * Visual: dark-ink panel, prompt left-aligned in mono, "copy" button
  * right-aligned. Clipboard fallback to execCommand for non-secure
@@ -16,7 +16,7 @@
 
 import { useState } from "react";
 
-const SKILL_URL = "https://codex.0xhoneyjar.xyz/skill.md";
+const SKILL_URL = "https://codex.miberarave.xyz/skill.md";
 const PROMPT = `Read ${SKILL_URL} and set up the Mibera Codex`;
 
 function copyToClipboard(text: string): Promise<void> {

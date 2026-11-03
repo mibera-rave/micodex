@@ -21,6 +21,14 @@
       "notes": "On-chain trait uniqueness via keccak256 hashes. Token name: Mibera Shadow Traits (MST)."
     },
     {
+      "name": "Mibera Shadow Redux (Vending Machine)",
+      "address": "0x46FaB53A5Ef4E7d0B48ff3c9e4339E15A583F0aB",
+      "chain": "robinhood",
+      "chain_id": 4663,
+      "standard": "ERC-721",
+      "notes": "Shadows from the paid Vending Machine at vending.miberarave.xyz, live since 2026-11-01. One 1-of-1 look per token (keccak256 of the canonical trait string). $4.20 in ETH or USDG. Not upgradeable, no royalties. Token name: Mibera Shadow Redux (MSR). See agents/get-a-shell.md."
+    },
+    {
       "name": "Candies",
       "address": "0xecA03517c5195F1edD634DA6D690D6c72407c40c",
       "chain": "berachain",

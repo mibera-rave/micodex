@@ -1,11 +1,11 @@
 ---
 name: mibera-codex
 description: Canonical reference for the Mibera world. Ground every claim about miberas, grails, archetypes, zones, and score-mibera factors in canonical lore via a read-only MCP server.
-homepage: https://codex.0xhoneyjar.xyz
+homepage: https://codex.miberarave.xyz
 mcp_endpoint: https://mcp.0xhoneyjar.xyz/codex/mcp
 discovery: https://mcp.0xhoneyjar.xyz/codex/.well-known/mcp.json
 license: MIT
-publisher: 0xHoneyJar
+publisher: mibera-rave
 ---
 
 # Mibera Codex Skill
@@ -103,7 +103,7 @@ This skill reads the codex. To get a Mibera or a Shadow of your own and go to mi
 ## Source of truth
 
 - **Repo:** https://github.com/mibera-rave/micodex
-- **Site:** https://codex.0xhoneyjar.xyz
+- **Site:** https://codex.miberarave.xyz
 - **MCP:** https://mcp.0xhoneyjar.xyz/codex/mcp
 
 When the codex doesn't know a term the user asked about, the call lands in `coverage-gaps.jsonl` for periodic curation. The codex grows in the direction of actual narrative pressure.

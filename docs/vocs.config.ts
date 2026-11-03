@@ -38,7 +38,7 @@ export default defineConfig({
   // and returns keys[keys.length - 1] — LAST match wins. So put the catch-all
   // FIRST and the most-specific overrides LAST.
   ogImageUrl: {
-    "**":                       "https://codex.0xhoneyjar.xyz/og.png",
+    "**":                       "https://codex.miberarave.xyz/og.png",
     "/grails/air":              "https://assets.0xhoneyjar.xyz/Mibera/grails/air.webp",
     "/grails/aquarius":         "https://assets.0xhoneyjar.xyz/Mibera/grails/aquarius.webp",
     "/grails/aries":            "https://assets.0xhoneyjar.xyz/Mibera/grails/aries.webp",
@@ -135,7 +135,7 @@ export default defineConfig({
     { text: "Tools", link: "/tools/lookup_zone" },
     {
       text: "GitHub",
-      link: "https://github.com/0xHoneyJar/construct-mibera-codex",
+      link: "https://github.com/mibera-rave/micodex",
     },
   ],
 
@@ -208,7 +208,7 @@ export default defineConfig({
   socials: [
     {
       icon: "github",
-      link: "https://github.com/0xHoneyJar/construct-mibera-codex",
+      link: "https://github.com/mibera-rave/micodex",
     },
   ],
 });
