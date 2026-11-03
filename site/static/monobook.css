@@ -58,6 +58,10 @@ table.infobox td.pic img { width: 220px; border: 1px solid #ccc; }
 .gallery span { display: inline-block; text-align: center; font-size: 85%; margin: 0 4px 6px 0; vertical-align: top; }
 .gallery img { width: 80px; height: 80px; object-fit: cover; border: 1px solid #ccc; background: #fff; padding: 3px; display: block; }
 
+/* an image's own page (clicking any picture opens it) */
+#imagepage #imagefile { max-width: min(800px, 100%); height: auto; border: 1px solid #ccc; }
+#bodyContent a.image { cursor: pointer; }
+
 /* the main page */
 .mp-welcome { border: 1px solid #aaa; background: #f9f9f9; padding: .6em 1em; margin: .8em 0 1em; text-align: center; }
 .mp-welcome .big { font-size: 162%; }

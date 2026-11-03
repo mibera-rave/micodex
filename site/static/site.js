@@ -46,6 +46,46 @@
     });
   }
 
+  // Pictures: clicking one opens its image page, as on a 2004 wiki. Pictures that already link somewhere keep it.
+  var imagePage = document.getElementById('imagepage');
+  if (!imagePage) {
+    var here = location.pathname;
+    var title = document.title.replace(/ - [^-]+$/, '');
+    document.querySelectorAll('#bodyContent img').forEach(function (img) {
+      if (img.closest('a') || !/^https:\/\//.test(img.src)) return;
+      var a = document.createElement('a');
+      a.className = 'image';
+      a.href = '/special/image?src=' + encodeURIComponent(img.src) + '&title=' + encodeURIComponent(title) + '&from=' + encodeURIComponent(here) + (img.alt ? '&alt=' + encodeURIComponent(img.alt) : '');
+      img.parentNode.insertBefore(a, img);
+      a.appendChild(img);
+    });
+  }
+
+  // The image page: the picture large, its full-size file, and the page it came from.
+  if (imagePage) {
+    var p = new URLSearchParams(location.search);
+    var src = p.get('src') || '';
+    if (/^https:\/\//.test(src)) {
+      var file = decodeURIComponent(src.split('?')[0].split('/').pop() || '');
+      var name = imagePage.getAttribute('data-prefix') + ':' + (p.get('alt') || file);
+      document.querySelector('h1.firstHeading').textContent = name;
+      document.title = name + ' - ' + document.title.split(' - ').pop();
+      var pic = document.getElementById('imagefile');
+      pic.alt = p.get('alt') || file;
+      pic.src = src;
+      document.getElementById('imagefull').href = src;
+      document.getElementById('imagefulltext').href = src;
+      pic.addEventListener('load', function () {
+        var words = document.getElementById('imagesize').getAttribute('data-words');
+        document.getElementById('imagesize').textContent = '(' + words.replace('@@W@@', pic.naturalWidth.toLocaleString('en-US')).replace('@@H@@', pic.naturalHeight.toLocaleString('en-US')) + ')';
+      });
+      var from = p.get('from') || '';
+      var back = document.getElementById('imagefrom');
+      if (/^\/(?!\/)/.test(from)) { back.href = from; back.textContent = p.get('title') || from; }
+      else back.parentNode.parentNode.hidden = true;
+    }
+  }
+
   // Random Mibera.
   if (document.getElementById('randommibera')) {
     location.replace('/miberas/' + pad(1 + Math.floor(Math.random() * 10000)));

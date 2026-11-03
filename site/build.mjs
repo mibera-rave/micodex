@@ -191,7 +191,7 @@ const NAV = [
   ['nav.random', '/special/random'],
 ]
 
-function shell({ title, rel = null, body, sub = true, backlinks = null, heading = true }) {
+function shell({ title, rel = null, body, sub = true, backlinks = null, heading = true, tab = 'tab.article' }) {
   const src = rel ? `${REPO}/blob/main/${encodeURI(rel)}` : REPO
   const history = rel ? `${REPO}/commits/main/${encodeURI(rel)}` : `${REPO}/commits/main`
   const discussion = `${REPO}/issues?q=${encodeURIComponent(`"${title}"`)}`
@@ -216,7 +216,7 @@ ${rel ? `<link rel="alternate" type="text/markdown" href="${RAW}/${encodeURI(rel
 <div id="wrap">
 <div id="logo"><a href="/" title="${w('nav.main')}"><img src="/smiley.png" alt="${w('site.name')}"></a></div>
 <ul id="tabs">
-<li class="selected"><a href="">${w('tab.article')}</a></li>
+<li class="selected"><a href="">${w(tab)}</a></li>
 <li><a href="${discussion}">${w('tab.discussion')}</a></li>
 <li><a href="${src}">${w('tab.source')}</a></li>
 <li><a href="${history}">${w('tab.history')}</a></li>
@@ -462,6 +462,9 @@ for (const rel of FILES) {
   const q = { q: '@@Q@@' }
   const slot = '<span class="searchq"></span>'
   write('/special/search', shell({ title: plain(w('special.search')), body: `<p id="searchnone" hidden>${w('special.search.none', q).replace('@@Q@@', slot)}</p><div id="searchsome" hidden><p>${w('special.search.matches', q).replace('@@Q@@', slot)}</p><ul id="searchresults"></ul></div>` }))
+  // An image's own page: whichever picture was clicked, large, with its full-size file and the page it came from.
+  // site.js fills it in from the address (?src=, ?title=, ?from=).
+  write('/special/image', shell({ title: plain(w('image.title')), tab: 'image.tab', sub: false, body: `<div id="imagepage" data-prefix="${w('image.title')}"><p><a id="imagefull"><img id="imagefile" alt=""></a></p><p><a id="imagefulltext">${w('image.full')}</a> <span id="imagesize" data-words="${w('image.size', { w: '@@W@@', h: '@@H@@' })}"></span></p><h2>${w('image.links')}</h2><p>${w('image.linkstext')}</p><ul><li><a id="imagefrom"></a></li></ul></div>` }))
   write('/special/random', shell({ title: plain(w('special.random')), body: `<p id="randommibera"><a href="/miberas/0001">Mibera #1</a></p>` }))
   fs.writeFileSync(path.join(OUT, '404.html'), shell({ title: plain(w('missing.title')), body: `<p>${w('missing.text')}</p><p><a href="/">${w('missing.back')}</a></p>` }))
 }

@@ -67,6 +67,14 @@ special.search.none = There is no page titled "{q}".
 special.search.matches = Pages with "{q}" in the title
 special.random = Random Mibera
 
+# An image's own page, opened by clicking any picture (MediaWiki's own labels)
+image.title = Image
+image.tab = image
+image.full = Full resolution
+image.size = {w} × {h} pixels
+image.links = Links
+image.linkstext = The following pages link to this file:
+
 # A page that isn't there (MediaWiki's own words)
 missing.title = No such page
 missing.text = There is currently no text in this page.
