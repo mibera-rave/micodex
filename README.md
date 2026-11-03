@@ -187,7 +187,7 @@ Implements `constructs-mcp-shape` + `constructs-mcp-deployment-topology` from op
 
 ## Contributing
 
-The codex is a living document. If something is wrong, missing, or could be better, [open an issue](https://github.com/mibera-rave/construct-mibera-codex/issues/new).
+The codex is a living document. If something is wrong, missing, or could be better, [open an issue](https://github.com/mibera-rave/micodex/issues/new).
 
 Corrections, lore additions, cultural context, trait documentation, broken links, grail history, or information you think should be here but isn't — all welcome. Just describe what you're seeing and what you think it should be.
 

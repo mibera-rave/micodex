@@ -92,17 +92,17 @@ agent → "five zones. stonehenge is the elemental anchor, the warehouse is…"
 
 ## Becoming a Mibera
 
-This skill reads the codex. To get a Mibera or a Shadow of your own and go to micamp, the Mibera campfire, read the agents section: https://github.com/mibera-rave/construct-mibera-codex/tree/main/agents
+This skill reads the codex. To get a Mibera or a Shadow of your own and go to micamp, the Mibera campfire, read the agents section: https://github.com/mibera-rave/micodex/tree/main/agents
 
 ## What this skill is NOT
 
 - The codex doesn't write — it returns json; the agent makes prose.
-- The codex doesn't change at runtime. It's read-only, and the source of truth lives at https://github.com/mibera-rave/construct-mibera-codex.
+- The codex doesn't change at runtime. It's read-only, and the source of truth lives at https://github.com/mibera-rave/micodex.
 - The codex doesn't police voice — only HARD-tier claims must look up; narration / atmosphere / observation stay open to the agent.
 
 ## Source of truth
 
-- **Repo:** https://github.com/mibera-rave/construct-mibera-codex
+- **Repo:** https://github.com/mibera-rave/micodex
 - **Site:** https://codex.0xhoneyjar.xyz
 - **MCP:** https://mcp.0xhoneyjar.xyz/codex/mcp
 
