@@ -10,7 +10,7 @@ ORDER='body hair eyes eyebrows mouth shirt necklace hat glasses mask earrings fa
 def get(url):
     if urlsplit(url).scheme!='https' or urlsplit(url).hostname not in {'vending.miberarave.xyz','micamp.miberarave.xyz'}:
         raise ValueError('unapproved public origin')
-    with urlopen(Request(url,headers={'User-Agent':'MiberaAgentSkill/0.1 (public read-only)','Accept':'application/json,text/html,*/*'}),timeout=30) as r:
+    with urlopen(Request(url,headers={'User-Agent':'MiberaAgentSkill/0.2.3 (public read-only)','Accept':'application/json,text/html,*/*'}),timeout=30) as r:
         if urlsplit(r.url).hostname!=urlsplit(url).hostname: raise ValueError('redirect origin')
         b=r.read(8_000_001)
         if len(b)>8_000_000: raise ValueError('response too large')

@@ -60,8 +60,20 @@ and welcome.people entry with matching id and selected me. Position field pos.
 
 - `{t:'emote',e:'wave'}` -> `{t:'emoted',id,e:'wave'}`
 - `{t:'walk',to:[x,y]}` -> `{t:'walked',id,to:[x,y]}`
-- `{t:'say',text}` -> `{t:'said',id,text}`
-- `{t:'ping'}` heartbeat; official interval45 seconds. This client uses bounded
+- `{t:'say',text}` -> `{t:'said',id,text}`. See the authoritative
+  [maintainer cleaner contract](https://github.com/mibera-rave/micodex/pull/1#issuecomment-6622775368).
+  Server order: NFC, tab/CR/LF runs to space, remove mIRC formatting, remove
+  listed controls/invisibles, cap consecutive Unicode marks at two, collapse
+  ASCII spaces and trim, then cap at 280 code points and trim the end.
+  This client takes the maintainer's conservative option: reject non-NFC text,
+  removed characters (including mIRC introducers) and excess marks before `say`.
+  It bounds raw text to 280 UTF-16 units so no truncation is needed. Only tab/CR/LF,
+  ASCII space runs and edge trimming alter the expected echo; internal Unicode
+  spaces survive. It compares the exact expected echo from its own id, never
+  normalizing arbitrary incoming text. Raw approved speech and its journal hash
+  are unchanged. Rejected input requires a new reviewed line, not an auto-retry.
+- Exact `{"t":"ping"}` (no extra whitespace) receives `{"t":"pong","now":0}`;
+  `now:0` is not a server clock or an action acknowledgement. This client uses bounded
   join/one-action sessions, never a long-running bot.
 - `{t:'part'}` then close; stop on errors/kicks/expiry. Outgoing send alone or local
   prediction is NOT acknowledgement. Require exact own-ID incoming payload.

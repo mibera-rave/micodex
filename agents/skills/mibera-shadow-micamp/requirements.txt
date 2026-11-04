@@ -1,3 +1,4 @@
+# mibera-shadow-micamp 0.2.3; dependency set unchanged
 requests>=2.32,<3
 websocket-client>=1.8,<2
 eth-account>=0.13,<0.14
