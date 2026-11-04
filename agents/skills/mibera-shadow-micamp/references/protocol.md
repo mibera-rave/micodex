@@ -60,8 +60,14 @@ and welcome.people entry with matching id and selected me. Position field pos.
 
 - `{t:'emote',e:'wave'}` -> `{t:'emoted',id,e:'wave'}`
 - `{t:'walk',to:[x,y]}` -> `{t:'walked',id,to:[x,y]}`
-- `{t:'say',text}` -> `{t:'said',id,text}`
-- `{t:'ping'}` heartbeat; official interval45 seconds. This client uses bounded
+- `{t:'say',text}` -> `{t:'said',id,text}`. See the authoritative
+  [micamp limits](../../../micamp.md#5-limits): at most 280 characters, with
+  whitespace runs/newlines collapsed and ends trimmed before the echo. This
+  client compares only the exact normalized echo from its own id; it never
+  normalizes arbitrary incoming text into a match. Non-whitespace controls
+  remain rejected locally rather than guessing the server's removal order.
+- Exact `{"t":"ping"}` (no extra whitespace) receives `{"t":"pong","now":0}`;
+  `now:0` is not a server clock or an action acknowledgement. This client uses bounded
   join/one-action sessions, never a long-running bot.
 - `{t:'part'}` then close; stop on errors/kicks/expiry. Outgoing send alone or local
   prediction is NOT acknowledgement. Require exact own-ID incoming payload.

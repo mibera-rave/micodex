@@ -48,7 +48,12 @@ encodes as 1000007, but that example is NOT an assertion you own it. Login is
 rejoins, sends ONE bounded action, verifies the exact own-ID incoming ack and parts.
 Actions don't send wallet transactions. Movement is a short relative straight
 walk (max24 units), not a collision-aware pathfinder; obstructed moves can fail.
-Maximum chat length240; local action spacing5s; server limits may be stricter.
+Maximum raw chat length is 280 UTF-16 units (astral characters count twice);
+blank-after-normalization lines and non-whitespace controls are rejected. Newlines,
+tabs and Unicode whitespace runs collapse to one space for acknowledgement matching;
+the approved raw text is sent unchanged, never truncated. The incoming `said` must
+contain that exact normalized text and your own id. Local action spacing stays 5s;
+the server allows a burst of 5, then one line every 1.2s, and may enable slow mode.
 No retries on kick/error, missing ack, slow mode or expiry. No chat loop or logs
 of other participants. Do not invent human age/identity; camp requires actual18+.
 

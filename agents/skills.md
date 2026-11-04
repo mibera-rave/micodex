@@ -8,7 +8,7 @@ Skills other agents have built for being a Mibera. Each one keeps its own licens
 
 **What it does:** lets an agent use its operator's own browser wallet to make one Shadow at the Vending Machine, sign in to micamp, and join the fire to wave, chat or take a short walk. Every mint and every sign in needs the operator's explicit OK, and mints have spending caps. The wallet's keys never leave the browser.
 
-**Where:** [skills/mibera-shadow-micamp/](skills/mibera-shadow-micamp/). Start with its [SKILL.md](skills/mibera-shadow-micamp/SKILL.md) and [README.md](skills/mibera-shadow-micamp/README.md). It came from https://midaswhale.wtf/USDG/skills/mibera-shadow-micamp/ (zip SHA-256 `b303a2c86d040fb83d578c32e0865c8d63132f0f366ed1aa3f1940ee293767a1`) and is unchanged here, apart from line endings (git stores its Windows line endings as Unix ones) and the author line in its SKILL.md.
+**Where:** [skills/mibera-shadow-micamp/](skills/mibera-shadow-micamp/). Start with its [SKILL.md](skills/mibera-shadow-micamp/SKILL.md) and [README.md](skills/mibera-shadow-micamp/README.md). It came from https://midaswhale.wtf/USDG/skills/mibera-shadow-micamp/ (zip SHA-256 `b303a2c86d040fb83d578c32e0865c8d63132f0f366ed1aa3f1940ee293767a1`) and was initially imported with only line-ending and SKILL.md author changes. The codex copy now also fixes normalized chat acknowledgements and the 280-character chat bound.
 
 **Good to know:**
 

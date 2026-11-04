@@ -77,6 +77,22 @@ def login(v,w,j,account,op,approved,http=None):
     session_validate(saved,account);j.update(op,'VERIFIED',{'expires':r['expires'],'holdingCount':len(r['miberas'])});j.update(noncekey,'VERIFIED',{})
     return {'authenticated':True,'miberas':r['miberas'],'expires':r['expires'],'paidTransaction':False}
 
+# ECMAScript whitespace, not Python's broader \s (which includes U+0085
+# and U+001C..U+001F). Keep non-whitespace content byte-for-byte intact.
+CHAT_SPACE=re.compile(r'[\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+')
+
+def chat_text(text):
+    need(isinstance(text,str),'chat_bounds')
+    # Bound the approved raw line too: never silently truncate public speech.
+    # UTF-16 units conservatively respect the JavaScript server's character cap.
+    need(1<=sum(2 if ord(c)>0xffff else 1 for c in text)<=280,'chat_bounds')
+    need(not any((ord(c)<32 and c not in '\t\n\v\f\r') or
+                 0x7f<=ord(c)<=0x9f or 0xd800<=ord(c)<=0xdfff for c in text),'chat_bounds')
+    normalized=CHAT_SPACE.sub(' ',text).strip(' ')
+    need(bool(normalized),'chat_bounds')
+    return normalized
+
+
 def participate(v,j,account,me,name,op=None,action=None,http=None,socket_factory=None):
     runtime_check();s=v.get('session');r=session_validate(s,account,me)
     need(isinstance(name,str) and 1<=len(name)<=16 and not any(ord(c)<32 for c in name),'name')
@@ -102,8 +118,8 @@ def participate(v,j,account,me,name,op=None,action=None,http=None,socket_factory
             need(op is not None,'action_operation_required');kind=action['kind']
             if kind=='wave':out={'t':'emote','e':'wave'};ack='emoted';matches=lambda f:f.get('e')=='wave'
             elif kind=='chat':
-                text=action['text'];need(isinstance(text,str) and 1<=len(text)<=240 and not any(ord(c)<32 for c in text),'chat_bounds')
-                need(action.get('approved') is True,'explicit_public_chat_approval');out={'t':'say','text':text};ack='said';matches=lambda f:f.get('text')==text
+                text=action['text'];expected=chat_text(text)
+                need(action.get('approved') is True,'explicit_public_chat_approval');out={'t':'say','text':text};ack='said';matches=lambda f:f.get('text')==expected
             elif kind=='move':
                 pos=own.get('pos');dx=action['dx'];dy=action['dy'];need(isinstance(pos,list) and len(pos)==2 and all(type(x) in (int,float) and math.isfinite(x) for x in pos+[dx,dy]) and 0<math.hypot(dx,dy)<=24,'short_relative_move_only')
                 to=[round(pos[0]+dx),round(pos[1]+dy)];out={'t':'walk','to':to};ack='walked';matches=lambda f:f.get('to')==to
