@@ -1,8 +1,8 @@
 {
   "micamp": {
     "officialOrigin": "https://micamp.miberarave.xyz",
-    "clientURL": "https://micamp.miberarave.xyz/assets/index-D-ksEuH6.js",
-    "sha256": "12278d83da9a03989560a716b2b6162423c8e5ab1b4cc836e8ecfb8789439e16",
+    "clientURL": "https://micamp.miberarave.xyz/assets/index-DkOWVwEf.js",
+    "sha256": "2266aa05b9285a35b5559d4f2dc2c070252ee5a9d04b5f926dbfe5b514a4d772",
     "basis": "Fetched directly from official app HTML; no redistributed bundle.",
     "hashNote": "SHA-256 of raw HTTP bytes, not requests text decoding or Windows newline serialization"
   },
