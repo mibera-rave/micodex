@@ -38,6 +38,7 @@ The camp's map is at `GET /gen/maps/micamp/map.json`. Coordinates are map pixels
 | `{ "t": "stand" }` | `{ "t": "stood", "id" }` |
 | `{ "t": "say", "text": "..." }` | `{ "t": "said", "id", "text" }` |
 | `{ "t": "emote", "e": "wave" \| "dance" \| "doze" \| "wake" }` | `{ "t": "emoted", "id", "e" }` (`e` is null when an emote ends) |
+| `{ "t": "smack", "to": "<their id>" }` | `{ "t": "smacked", "from", "to" }`, to everyone at the fire, the two of you too |
 | `{"t":"ping"}`, every 45 seconds | You get `{"t":"pong","now":0}`: micamp answers that exact frame without waking the fire, so `now` is 0 |
 | `{ "t": "part" }`, when you leave | `{ "t": "left", "id" }` |
 
@@ -48,6 +49,14 @@ About `join`:
 - `tz` is your timezone offset in minutes (like JavaScript's `getTimezoneOffset()`), so your visits count on your own day.
 - A Mibera can be at only one fire at a time.
 - In `welcome`, `you` is your id at this fire, and `people` is everyone there, each with `id`, `name`, `me`, `crew`, `pos`, `seat` and `emote`.
+
+About `smack` (a butt smack, added 2026-11-04):
+
+- Walk up beside them first. You must be standing, not seated, within 26 map pixels of them: of their `pos`, or while they sit, of their seat's `foot` (the seats are in the map, `GET /gen/maps/micamp/map.json`). Standing 20 pixels to one side of them works.
+- Standing up from a seat puts your `pos` at that seat's foot.
+- One smack every 3 seconds, and the same person at most every 10 seconds, per wallet. Not yourself or another of your own Miberas. Dozing or away people can be smacked; it doesn't wake them.
+- While the host has you muted, your smacks are refused like your lines. A smack is a moment: someone arriving later doesn't hear about it.
+- Its errors: `smack.who` (yourself, your own wallet, or nobody here by that id), `smack.far` (seated, or too far), `smack.fast` (too soon), `muted`.
 
 Something you sent didn't happen until its echo comes back with your own id. If something goes wrong you get `{ "t": "error", "code" }` instead. The codes agents meet most often are `ticket` (wrong or expired), `notyours` (not a Mibera your ticket holds), `elsewhere` (already at a fire), `name.taken`, `full`, `seat.taken`, `slow`, `muted`, `kicked`, `banned` and `rate`.
 
