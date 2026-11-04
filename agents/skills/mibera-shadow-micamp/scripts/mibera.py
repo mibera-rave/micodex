@@ -1,5 +1,5 @@
 """Actual official HTTP/SIWE/WebSocket client and native-only mint CLI."""
-import argparse, datetime as dt, hashlib, json, math, os, re, sqlite3, time
+import argparse, base64, datetime as dt, hashlib, json, math, os, re, sqlite3, time, unicodedata
 from pathlib import Path
 from decimal import Decimal, ROUND_CEILING
 import requests, websocket
@@ -42,19 +42,38 @@ class Journal:
 
 class HTTP:
     def __init__(self):self.s=requests.Session();self.s.trust_env=False
-    def call(self,origin,path,data=None,ticket=None):
+    def call(self,origin,path,data=None,ticket=None,capture=None):
         need(origin in (M,V),'http_origin')
-        headers={'Accept':'application/json','User-Agent':'MiberaAgentSkill/0.2'}
+        need(capture is None or (origin==M and path=='/door/sign' and data is not None),'login_capture_scope')
+        headers={'Accept':'application/json','User-Agent':'MiberaAgentSkill/0.2.3'}
         if ticket:headers['Authorization']='Bearer '+ticket
-        r=self.s.request('GET' if data is None else 'POST',origin+path,json=data,headers=headers,timeout=30,allow_redirects=False)
-        need(r.status_code==200 and len(r.content)<4_000_000,'official_http_failed_ambiguous_if_write')
-        obj=r.json();need(isinstance(obj,dict) and 'error' not in obj,'official_response_error');return obj
+        r=self.s.request('GET' if data is None else 'POST',origin+path,json=data,headers=headers,timeout=30,allow_redirects=False,stream=capture is not None)
+        if capture is not None:
+            try:
+                body=bytearray()
+                for chunk in r.iter_content(65536):
+                    body.extend(chunk[:4_000_000-len(body)])
+                    if len(body)>=4_000_000:break
+                # Persist exact response payload bytes, including malformed JSON,
+                # before decoding or status/schema checks. Never retry this POST.
+                response_headers=list(r.raw.headers.items());cookies=self.s.cookies.get_dict()
+                metadata=json.dumps([response_headers,cookies])
+                metadata_large=len(metadata)>65536
+                raw={'status':r.status_code,'headers':response_headers if not metadata_large else [],'cookies':cookies if not metadata_large else {},'body':base64.b64encode(body).decode('ascii'),'receivedAt':time.time(),'truncated':len(body)>=4_000_000 or metadata_large}
+                capture(raw)
+                need(not raw['truncated'] and r.status_code==200,'official_http_failed_ambiguous_if_write')
+                obj=json.loads(bytes(body))
+            finally:r.close()
+        else:
+            need(r.status_code==200 and len(r.content)<4_000_000,'official_http_failed_ambiguous_if_write')
+            obj=r.json()
+        need(isinstance(obj,dict) and 'error' not in obj,'official_response_error');return obj
 
-def session_validate(s,account,me=None):
+def session_validate(s,account,me=None,at=None):
     need(s['account'].lower()==account.lower(),'session_account')
     r=s['response'];need(isinstance(r.get('ticket'),str) and 16<len(r['ticket'])<16384,'session_ticket')
-    need(type(r.get('expires')) in (int,float) and r['expires']>time.time()*1000,'session_expired')
-    need(isinstance(r.get('miberas'),list) and all(type(x)==int for x in r['miberas']),'session_holdings')
+    need(type(r.get('expires')) in (int,float) and math.isfinite(r['expires']) and r['expires']>(time.time() if at is None else at)*1000,'session_expired_use_new_login_operation_no_remint')
+    need(isinstance(r.get('miberas'),list) and r['miberas'] and all(type(x)==int and x>0 for x in r['miberas']) and len(set(r['miberas']))==len(r['miberas']),'session_holdings')
     if me is not None:need(me in r['miberas'],'not_server_owned_character')
     return r
 
@@ -71,24 +90,66 @@ def login(v,w,j,account,op,approved,http=None):
     need(isinstance(sig,str) and re.fullmatch('0x[0-9a-fA-F]{130}',sig),'signature_format')
     need(Account.recover_message(encode_defunct(text=text),signature=sig).lower()==account.lower(),'signature_recovery')
     need(text==siwe_message(ch,account,max_age=60),'challenge_expired_after_prompt')
-    w.identity(account,80094);j.update(op,'SUBMITTING',{'messageSHA256':digest(text)})
-    r=h.call(M,'/door/sign',{'message':text,'signature':sig})
-    saved={'account':account,'response':r,'cookies':h.s.cookies.get_dict()};v.put('session',saved)
-    session_validate(saved,account);j.update(op,'VERIFIED',{'expires':r['expires'],'holdingCount':len(r['miberas'])});j.update(noncekey,'VERIFIED',{})
-    return {'authenticated':True,'miberas':r['miberas'],'expires':r['expires'],'paidTransaction':False}
+    w.identity(account,80094);binding={'messageSHA256':digest(text),'nonceKey':noncekey};j.update(op,'SUBMITTING',binding)
+    def capture(raw):
+        raw.update(account=account.lower(),operation=op,**binding)
+        v.put('login_raw_'+digest(op),raw)
+    h.call(M,'/door/sign',{'message':text,'signature':sig},capture=capture)
+    return login_reconcile(v,j,account,op)
 
-# ECMAScript whitespace, not Python's broader \s (which includes U+0085
-# and U+001C..U+001F). Keep non-whitespace content byte-for-byte intact.
-CHAT_SPACE=re.compile(r'[\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]+')
+def login_reconcile(v,j,account,op):
+    """Local encrypted response reconciliation only: no wallet or HTTP calls."""
+    with j.db:
+        j.db.execute('BEGIN IMMEDIATE')
+        return _login_reconcile(v,j,account,op)
+
+def _login_reconcile(v,j,account,op):
+    address(account);row=j.read(op)
+    need(row['kind']=='login' and row['account']==account.lower() and row['state'] in ('SUBMITTING','VERIFIED'),'login_journal_binding')
+    d=row['details'];raw=v.get('login_raw_'+digest(op))
+    need(raw['account']==account.lower() and raw['operation']==op and raw['messageSHA256']==d['messageSHA256'] and raw['nonceKey']==d['nonceKey'],'login_raw_binding')
+    nk=raw['nonceKey'];nr=j.read(nk)
+    need(nk.startswith('nonce_') and nr['account']==account.lower() and nr['kind'].startswith('nonce:') and nr['state'] in ('RESERVED','VERIFIED'),'login_nonce_binding')
+    need(type(raw['receivedAt']) in (int,float) and math.isfinite(raw['receivedAt']) and 0<raw['receivedAt']<=time.time()+5,'login_raw_time')
+    need(raw['status']==200 and raw['truncated'] is False and isinstance(raw['headers'],list) and isinstance(raw['cookies'],dict) and all(isinstance(k,str) and isinstance(x,str) for k,x in raw['cookies'].items()),'login_raw_http')
+    body=base64.b64decode(raw['body'],validate=True);need(len(body)<4_000_000,'login_raw_size');r=json.loads(body)
+    need(isinstance(r,dict) and 'error' not in r,'official_response_error')
+    need(type(r.get('expires')) in (int,float) and math.isfinite(r['expires']) and r['expires']>0,'session_expiry_invalid')
+    saved={'account':account,'response':r,'cookies':raw['cookies']}
+    # Validate acceptance at receipt time; an expired accepted response closes the
+    # consumed operation but cannot become a usable session or extend expiry.
+    session_validate(saved,account,at=raw['receivedAt'])
+    need(r['expires']>raw['receivedAt']*1000,'login_not_valid_at_receipt')
+    active=r['expires']>time.time()*1000
+    if row['state']!='VERIFIED':
+        if active:v.put('session',saved)
+        # Commit both records together. A failed local save leaves SUBMITTING;
+        # read-only ack can be repeated, never another signature or POST.
+        d.update(expires=r['expires'],holdingCount=len(r['miberas']))
+        j.db.execute('UPDATE ops SET state=?,details=? WHERE id=?',('VERIFIED',json.dumps(d),op))
+        j.db.execute('UPDATE ops SET state=? WHERE id=?',('VERIFIED',nk))
+    return {'authenticated':active,'miberas':r['miberas'],'expires':r['expires'],'paidTransaction':False,'expired':not active,'next':'reuse_session' if active else 'new_login_operation_same_wallet_no_remint'}
+
+# Micamp collapses line breaks/tabs, then ASCII spaces; internal Unicode
+# spaces survive. Maintainer contract: micodex PR1 comment 6622775368.
+CHAT_SPACE=re.compile(r'[\t\r\n]+')
+CHAT_REMOVED=re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f\u00ad\u034f\u061c\u115f-\u1160\u17b4-\u17b5\u180b-\u180f\u200b-\u200f\u2028-\u202e\u2060-\u206f\u3164\ufe00-\ufe0e\ufeff\uffa0\ufff0-\ufffb]')
 
 def chat_text(text):
     need(isinstance(text,str),'chat_bounds')
     # Bound the approved raw line too: never silently truncate public speech.
     # UTF-16 units conservatively respect the JavaScript server's character cap.
     need(1<=sum(2 if ord(c)>0xffff else 1 for c in text)<=280,'chat_bounds')
-    need(not any((ord(c)<32 and c not in '\t\n\v\f\r') or
-                 0x7f<=ord(c)<=0x9f or 0xd800<=ord(c)<=0xdfff for c in text),'chat_bounds')
-    normalized=CHAT_SPACE.sub(' ',text).strip(' ')
+    need(not any(0xd800<=ord(c)<=0xdfff for c in text),'chat_bounds')
+    # Conservative maintainer-approved route: reject anything the cleaner would
+    # change beyond tabs/linebreaks/spaces/edge trimming, before reserving/saying.
+    # mIRC introducers/format controls are included in CHAT_REMOVED.
+    need(unicodedata.normalize('NFC',text)==text and not CHAT_REMOVED.search(text),'chat_server_changes_content')
+    marks=0
+    for c in text:
+        marks=marks+1 if unicodedata.category(c).startswith('M') else 0
+        need(marks<=2,'chat_server_changes_content')
+    normalized=re.sub(' {2,}',' ',CHAT_SPACE.sub(' ',text)).strip()
     need(bool(normalized),'chat_bounds')
     return normalized
 
@@ -218,6 +279,7 @@ def main():
     q=sub.add_parser('mint');q.add_argument('--consent',required=True);q.add_argument('--picks',required=True);q.add_argument('--runtime-sha256',required=True)
     q=sub.add_parser('reconcile');q.add_argument('--op',required=True)
     q=sub.add_parser('login');q.add_argument('--account',required=True);q.add_argument('--op',required=True);q.add_argument('--approve-login',action='store_true')
+    q=sub.add_parser('loginack',aliases=['login-reconcile']);q.add_argument('--account',required=True);q.add_argument('--op',required=True)
     for cmd in ('join','wave','chat','move'):
         q=sub.add_parser(cmd);q.add_argument('--account',required=True);q.add_argument('--me',type=int,required=True);q.add_argument('--name',default='Agent-AI')
         if cmd!='join':q.add_argument('--op',required=True)
@@ -226,7 +288,7 @@ def main():
     q=sub.add_parser('actionack');q.add_argument('--op',required=True)
     a=p.parse_args()
     try:
-        if a.cmd=='preflight':result=public.preflight();runtime_check();result['version']='0.2.0'
+        if a.cmd=='preflight':result=public.preflight();runtime_check();result['version']='0.2.3'
         elif a.cmd=='preview':
             reg=public.jsonget(V+'/api/registry');picks=json.loads(a.picks);Path(a.out).write_text(public.preview(reg,picks),encoding='utf-8');result={'preview':a.out,'finalArt':False}
         else:
@@ -239,6 +301,7 @@ def main():
             elif a.cmd=='mint':result=mint(v,w,j,Consent(**json.loads(Path(a.consent).read_text())),json.loads(a.picks),a.runtime_sha256)
             elif a.cmd=='reconcile':result=reconcile(v,w,j,a.op)
             elif a.cmd=='login':result=login(v,w,j,a.account,a.op,a.approve_login)
+            elif a.cmd in ('loginack','login-reconcile'):result=login_reconcile(v,j,a.account,a.op)
             elif a.cmd=='actionack':
                 row=j.read(a.op);need(row['kind']=='action','action_operation_required');result={'state':row['state'],'receipt':row['details']}
             else:

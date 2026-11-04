@@ -10,8 +10,7 @@ class ChatTests(unittest.TestCase):
     def test_normalization(self):
         for raw, expected in [(' hello','hello'),('hello ','hello'),
                 ('hello\nworld','hello world'),('a   b','a b'),
-                ('\r\n a\t b \n','a b'),('a\u00a0\u2003b','a b'),
-                ('\ufeffa\u2028b\u3000','a b'),('a\u200bb','a\u200bb')]:
+                ('\r\n a\t b \n','a b'),('a\u00a0\u2003b','a\u00a0\u2003b')]:
             with self.subTest(raw=repr(raw)):self.assertEqual(m.chat_text(raw),expected)
     def test_boundary(self):
         self.assertEqual(m.chat_text('x'*280),'x'*280)
@@ -45,4 +44,19 @@ class ChatTests(unittest.TestCase):
                 with self.assertRaises(StopIteration):self.run_chat([frame])
     def test_boundary_is_sent_and_acknowledged(self):
         self.assertTrue(self.run_chat([{'t':'said','id':'own','text':'x'*280}],text='x'*280)[0]['action']['acknowledged'])
+    def test_unicode_space_exact_echo_and_raw_payload(self):
+        raw=' \u3000a\u00a0\u2003b \n'
+        result,journal,sock=self.run_chat([{'t':'said','id':'own','text':'a\u00a0\u2003b'}],raw)
+        self.assertTrue(result['action']['acknowledged'])
+        self.assertEqual(json.loads(sock.send.call_args_list[1].args[0])['text'],raw)
+    def test_rejected_content_never_reserved_or_sent(self):
+        vault=Mock();vault.get.return_value={};journal=Mock();http=Mock()
+        http.call.return_value={'fire':'camp'};sock=Mock()
+        sock.recv.return_value=json.dumps({'t':'welcome','you':'own','people':[{'id':'own','me':7}]})
+        with patch.object(m,'runtime_check'),patch.object(m,'session_validate',return_value={'ticket':'local','expires':10**20}):
+            with self.assertRaises(Guard):
+                m.participate(vault,journal,'local',7,'Fixture','reject-local-001',
+                    {'kind':'chat','text':'a\u200bb','approved':True},http,lambda *a,**k:sock)
+        journal.reserve.assert_not_called()
+        self.assertEqual([json.loads(c.args[0])['t'] for c in sock.send.call_args_list],['join','part'])
 if __name__=='__main__':unittest.main()

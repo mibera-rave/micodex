@@ -1,4 +1,4 @@
-# Mibera Shadow + Micamp 0.2.0
+# Mibera Shadow + Micamp 0.2.3
 
 **Working own-wallet connector, authenticated HTTP login and WebSocket participation.**
 Unofficial integration. No custody, author wallet access, server impersonation or
@@ -49,13 +49,63 @@ rejoins, sends ONE bounded action, verifies the exact own-ID incoming ack and pa
 Actions don't send wallet transactions. Movement is a short relative straight
 walk (max24 units), not a collision-aware pathfinder; obstructed moves can fail.
 Maximum raw chat length is 280 UTF-16 units (astral characters count twice);
-blank-after-normalization lines and non-whitespace controls are rejected. Newlines,
-tabs and Unicode whitespace runs collapse to one space for acknowledgement matching;
-the approved raw text is sent unchanged, never truncated. The incoming `said` must
+blank-after-normalization lines and controls other than tab/CR/LF are rejected.
+Following the maintainer's conservative option, non-NFC text, code points removed
+by the server and runs of more than two Unicode marks are rejected before `say`.
+`chat_server_changes_content` means revise and explicitly approve the text; do not
+automatically sanitize and retry it. Tabs/CR/LF become spaces, ASCII space runs
+collapse, and ends are trimmed for acknowledgement matching. Internal Unicode
+spaces (such as NBSP) remain unchanged. The approved raw text is sent unchanged,
+never truncated. The incoming `said` must
 contain that exact normalized text and your own id. Local action spacing stays 5s;
 the server allows a burst of 5, then one line every 1.2s, and may enable slow mode.
 No retries on kick/error, missing ack, slow mode or expiry. No chat loop or logs
 of other participants. Do not invent human age/identity; camp requires actual18+.
+
+Cleaner contract and accepted conservative implementation:
+https://github.com/mibera-rave/micodex/pull/1#issuecomment-6622775368
+This standalone v0.2.3 is based on the deployed v0.2.2 ZIP, which follows PR head
+d4b4c3f95e1447c2462657de45f5f6a9c15c8f09. Its Unicode correction is preserved;
+see the release evidence and existing upstream PR for submission/merge status.
+This standalone download does not imply adoption into the upstream main branch.
+
+## Session expiry and read-only login recovery
+Reuse the encrypted session while its finite millisecond expiry is valid; join
+does not sign automatically. Expiry does not mean loss of NFT ownership and never
+requires reminting. After the earlier login is VERIFIED, explicitly approve a NEW
+unique operation with the same wallet, e.g. `login --account ACCOUNT --op
+login-owned-002 --approve-login`. This allocates a fresh nonce. Never reuse/reset
+old operations or nonce barriers or edit an expiry to make a ticket usable.
+
+For a login error after submission, keep the original state and run:
+```text
+python scripts/secure_run.py loginack --account ACCOUNT --op login-owned-001
+```
+`login-reconcile` is an alias. This command does ONLY local encrypted response and
+journal reads plus proven local session/journal restoration; no wallet connection,
+personal_sign, nonce GET, door/sign POST or other network request. Raw bounded
+response payload bytes (base64), status, headers, cookies and receipt time are
+encrypted BEFORE JSON decoding/status/schema validation, with account, operation,
+message hash and nonce-journal binding. They are never printed. JSON parsing is
+strict enough to reject nonfinite/boolean expiry, bad tickets or holdings; an
+accepted response must have been unexpired at receipt. Repeated ack is idempotent
+and cannot overwrite a newer session once the operation is VERIFIED.
+
+An accepted response which expired AFTER receipt closes both consumed login/nonce
+records, returns `authenticated:false` and fresh-login guidance, and does not
+install an expired session. Malformed/missing/truncated/wrong-account/wrong-op or
+otherwise ambiguous responses remain blocked: no reset, signing or POST retry.
+Pre-0.2.3 failures without saved raw evidence cannot be reconstructed by this
+command. A lost connection or disk failure before durable capture also remains
+ambiguous; this change cannot make server acceptance and local disk atomic.
+Response payload limit is below 4 MB; transport decompression precedes capture,
+but capture precedes text/JSON decoding. Cookies retain the existing dictionary
+semantics, not a new cross-domain cookie-jar implementation. Keep all state private.
+
+Windows Vault read/atomic replace sharing failures were reproduced on actual
+held-open handles. Only these local operations retry, at most 9 attempts with
+50 ms delays (400 ms total backoff); encryption, restrictive permissions and fsync
+remain. Persistent failure stops; no wallet/network/SQLite retry was introduced.
 
 ## Native-only ONE mint (do not use for QA)
 First run preflight + preview and inspect the deployed contract:
@@ -137,6 +187,8 @@ paid mainnet transaction. Public preflight uses GET only: registry/price/map,
 existing token and current official asset hashes. No public nonce, login, join,
 chat, fresh mint or author session was used for release QA. Windows tested;
 Linux/macOS use portable code paths but were not exercised on those hosts.
+Grouper's separately protected private live refresh is not qualification of this
+portable package or a real browser-extension UI. No protected signer is exported.
 
 MIT for integration code. Third-party dependencies retain their own licenses;
 see THIRD_PARTY.md. Official Mibera art/code is not included. Not affiliated with
