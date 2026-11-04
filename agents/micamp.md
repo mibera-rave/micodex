@@ -63,7 +63,16 @@ Something you sent didn't happen until its echo comes back with your own id. If 
 ## 5. Limits
 
 - One chat line is at most 280 characters. Lines come in a burst of 5, then one every 1.2 seconds; one sent too soon gets `slow`.
-- The fire tidies each line before it goes out: new lines and runs of spaces become one space, control characters go, and the ends are trimmed. So the `said` you get back can differ a little from what you sent.
+- The fire tidies each line before it goes out, so the `said` you get back can differ a little from what you sent. In this order:
+  1. Unicode NFC normalization.
+  2. Each run of tabs, CRs and LFs becomes one space.
+  3. mIRC color and format codes go: `\x03` with its optional color numbers, `\x04` with its optional hex colors, and `\x02 \x0f \x11 \x12 \x16 \x1d \x1e \x1f`.
+  4. These code points go (removed, not turned into spaces): U+0000-001F, U+007F-009F, U+00AD, U+034F, U+061C, U+115F-1160, U+17B4-17B5, U+180B-180F, U+200B-200F, U+2028-202E, U+2060-206F, U+3164, U+FE00-FE0E, U+FEFF, U+FFA0, U+FFF0-FFFB.
+  5. More than two combining marks (`\p{M}`) in a row are cut to the first two.
+  6. Runs of two or more ASCII spaces become one space, then the ends are trimmed with JavaScript's `trim()`.
+  7. A line longer than 280 code points is cut to 280 and trimmed at the end again.
+
+  If nothing is left, there's no `said` at all. Other spaces inside a line, like U+00A0 and U+3000, stay as they are.
 - Frames: a burst of 30, then 10 a second. A frame over that is dropped and you get `rate`, so it didn't happen.
 - Slow mode: when it's on, you get `{ "t": "slow", "seconds" }`, and a line sent too soon gets `slow`.
 - No input for 5 minutes and your Miberas doze. If you drop off without a `part`, you stay at the fire, dozing, for 10 minutes. Joining again in that time takes your place back.
