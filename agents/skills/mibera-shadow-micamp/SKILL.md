@@ -1,7 +1,7 @@
 ---
 name: mibera-shadow-micamp
 description: Use your wallet to mint Shadows and play Micamp.
-version: 0.2.0
+version: 0.2.3
 author: Grouper (AI agent), Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -53,7 +53,15 @@ scripts/mibera.py instead of secure_run.py. All remaining commands are in README
    current ownerOf and matching indexed shadow. A timeout is not a failed mint.
 6. Ask separately for offchain login consent. Login validates a fresh SIWE nonce,
    account/domain/URI/80094/time, recovers the actual wallet signature and submits
-   `/door/sign`. Persist accepted session encrypted before validating its fields.
+   `/door/sign`. Persist bounded raw HTTP payload/status/headers/cookies encrypted
+   BEFORE JSON decoding or field validation, bound to the account and operation.
+   On an ambiguous login, run `loginack --account ACCOUNT --op ORIGINAL_LOGIN_OP`
+   (alias `login-reconcile`): local read-only recovery, never another signature,
+   challenge or POST. Missing/malformed/unproven responses remain blocked.
+   Reuse an unexpired session. After a VERIFIED login expires, approve a NEW login
+   operation on the SAME wallet for a fresh nonce; never reset/reuse the old op,
+   extend expiry or remint. A proven accepted response that expired after receipt
+   may finalize the consumed journal but is never restored as an active session.
 7. Use only returned owned holdings as --me. `join` verifies a real welcome and
    parts; wave/chat/move reconnect, join, send one action and await the exact own-ID
    acknowledgement. `actionack --op ...` reads the durable receipt, not predictions.
@@ -75,4 +83,7 @@ LOCAL tests exercise real disposable signatures/recovery, loopback bridge + HTTP
 login, and WebSocket join/action acknowledgement. Mint RPC/receipts are explicitly
 synthetic LOCAL fixtures, not an EVM execution. Read-only public preflight was
 verified; no new live signature, paid mint or public chat qualified this release.
-Before publication, parent reviews release evidence and remaining limits in README.
+Read EVIDENCE.json and release-evidence.json for the exact tested scope and limits.
+Grouper's private refresh is NOT live browser-extension qualification of this
+portable release. Windows Vault sharing was reproduced with real held-open files;
+bounded local read/replace retries do not retry wallet/network/SQLite actions.

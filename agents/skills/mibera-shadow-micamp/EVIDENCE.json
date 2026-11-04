@@ -1,0 +1,18 @@
+{
+  "version": "0.2.3",
+  "status": "REVIEWED_RELEASE_PACKAGE",
+  "baseArchive": "mibera-shadow-micamp-0.2.2.zip",
+  "baseSHA256": "dbddd45d3eabe1bb42a6a7bf74a6225e283d08cfb14128f2c189e04c670f3303",
+  "qualification": "72 Windows local fixture tests; real public GET-only preflight; extracted archive exercised by build.py. No public signing/login/mint/gameplay or browser-extension UI qualification.",
+  "preserved": "Mint/calldata/reconcile function block and chat helper block byte-identical; provenance and all prior tests/licenses unchanged.",
+  "windows": "Real held-open read/replace reproductions failed on baseline; 9 bounded local attempts, 50ms delays. No side-effect/SQLite retries.",
+  "tradeoffs": [
+    "No distributed atomicity between server acceptance and encrypted local capture. Missing/partial/malformed evidence remains blocked.",
+    "Read-only refers to external effects: ack may write encrypted session and atomically finalize local login/nonce records.",
+    "Cookies preserve legacy dictionary semantics. Payload capture is after HTTP decompression, before JSON/text decoding. Header/cookie metadata limited to 64 KiB; oversize is truncated and nonrecoverable.",
+    "Expired-after-receipt acceptance may finalize consumed operation but cannot activate/extend expired session.",
+    "Same-user malware and concurrent unrelated wallet sends remain out of scope."
+  ],
+  "protectedAuthorServicesIncluded": false,
+  "provenancePinsChanged": false
+}

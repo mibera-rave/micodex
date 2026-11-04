@@ -58,7 +58,13 @@ class Local:
                 fixture.action_sends+=1
                 if fixture.no_ack:ws.close();break
                 f={'t':{'emote':'emoted','say':'said','walk':'walked'}[o['t']],'id':'local-you'}
-                f.update({k:v for k,v in o.items() if k!='t'});ws.send(json.dumps(f))
+                f.update({k:v for k,v in o.items() if k!='t'})
+                if o['t']=='say':
+                    # Independent implementation for the accepted subset only:
+                    # line breaks/tabs and ASCII space runs; NOT all Unicode spaces.
+                    line=o['text'].replace('\r',' ').replace('\n',' ').replace('\t',' ')
+                    f['text']=' '.join(part for part in line.split(' ') if part).strip()
+                ws.send(json.dumps(f))
         self.ws=ws_serve(game,'127.0.0.1',0);threading.Thread(target=self.ws.serve_forever,daemon=True).start();self.wsurl='ws://127.0.0.1:'+str(self.ws.socket.getsockname()[1])
     def connect_ws(self,*args,**kwargs):return websocket.create_connection(self.wsurl,timeout=2,http_proxy_host=None)
     def poll(self):
@@ -125,6 +131,13 @@ class Tests(unittest.TestCase):
         r=subprocess.run([sys.executable,str(script),'--state',str(self.v.path),'connect','--account',self.f.account,'--chain','80094'],capture_output=True,text=True,timeout=30)
         self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertTrue(json.loads(r.stdout)['result']['connected'])
     def test_ws_chat_ack(self):self.login();self.assertEqual(self.action('chat',text='LOCAL ONLY',approved=True)['action']['ackType'],'said')
+    def test_ws_normalized_chat_ack(self):
+        self.login();self.assertTrue(self.action('chat',text='  hello\n\t camp  ',approved=True)['action']['acknowledged'])
+        self.assertEqual(self.j.read('action-local-001')['state'],'VERIFIED')
+    def test_ws_internal_unicode_space_ack(self):
+        self.login();self.assertTrue(self.action('chat',text=' \u3000a\u00a0\u2003b\n ',approved=True)['action']['acknowledged'])
+        self.assertEqual(self.f.action_sends,1)
+        self.assertEqual(self.j.read('action-local-001')['state'],'VERIFIED')
     def test_ws_move_ack(self):self.login();self.assertEqual(self.action('move',dx=12,dy=0)['action']['ackType'],'walked')
     def test_join_no_action(self):self.login();self.assertTrue(m.participate(self.v,self.j,self.f.account,1000007,'Fixture',socket_factory=self.f.connect_ws)['joined']);self.assertEqual(self.f.action_sends,0)
     def test_local_paid_fixture_signature_receipt_owner(self):self.assertEqual(self.mint()['tokenId'],7);self.assertEqual(self.f.sends,1)

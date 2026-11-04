@@ -23,6 +23,14 @@ def private_dir(path):
         p.chmod(0o700);need(p.stat().st_uid==os.getuid(),'state_owner')
     return p
 
+def local_file_io(action):
+    """Bounded Windows sharing recovery ONLY; never wallet/network/SQLite."""
+    for attempt in range(9):
+        try:return action()
+        except PermissionError as e:
+            if os.name!='nt' or not (getattr(e,'winerror',None) in (5,32,33) or (getattr(e,'winerror',None) is None and e.errno==13)) or attempt==8:raise
+            time.sleep(.05)
+
 class Vault:
     def __init__(self, path):
         self.path=private_dir(path)
@@ -36,10 +44,12 @@ class Vault:
         p=self.path/(name+'.enc');tmp=self.path/(name+'.'+secrets.token_hex(8)+'.tmp')
         fd=os.open(tmp,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
         with os.fdopen(fd,'wb') as f:f.write(blob);f.flush();os.fsync(f.fileno())
-        os.replace(tmp,p)
+        try:local_file_io(lambda:os.replace(tmp,p))
+        finally:
+            if tmp.exists():tmp.unlink()
     def get(self,name):
         need(name.isidentifier(),'vault_name')
-        b=(self.path/(name+'.enc')).read_bytes()
+        b=local_file_io(lambda:(self.path/(name+'.enc')).read_bytes())
         key=Scrypt(salt=b[:16],length=32,n=2**14,r=8,p=1).derive(self.password.encode())
         return json.loads(AESGCM(key).decrypt(b[16:28],b[28:],name.encode()))
 
