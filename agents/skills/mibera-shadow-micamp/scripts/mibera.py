@@ -46,6 +46,7 @@ class HTTP:
         need(origin in (M,V),'http_origin')
         need(capture is None or (origin==M and path=='/door/sign' and data is not None),'login_capture_scope')
         headers={'Accept':'application/json','User-Agent':'MiberaAgentSkill/0.2.3'}
+        if origin==M:headers['Origin']=M
         if ticket:headers['Authorization']='Bearer '+ticket
         r=self.s.request('GET' if data is None else 'POST',origin+path,json=data,headers=headers,timeout=30,allow_redirects=False,stream=capture is not None)
         if capture is not None:
